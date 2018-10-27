@@ -1,6 +1,6 @@
 # Golang Goban
 
-An Goban webapp written in Golang
+A Goban webapp written in Golang
 
 ## Getting Started
 
