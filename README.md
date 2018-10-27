@@ -1,10 +1,10 @@
-# Project Title
+# Golang Goban
 
-A online Goban written in Golang
+An Goban webapp written in Golang
 
 ## Getting Started
 
-This is a Docker ao all you need to do is install the prereqs below then start the app
+This is a Docker app all you need to do is install the prereqs below then start the app as instructed
 
 ### Prerequisites
 
