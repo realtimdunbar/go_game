@@ -12,31 +12,28 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-type Game []struct {
-	ID          int64 `jsonapi:"primary,game_id"`
-	Board       int   `jsonapi:"attr,board"`
-	WhitePlayer struct {
-		Player
-	} `jsonapi:"white_player"`
-	BlackPlayer struct {
-		Player
-	} `jsonapi:"black_player"`
-	Moves []struct {
-		Move
-	} `jsonapi:"moves"`
-	Winner string `jsonapi:"winner"`
-	Loser  string `jsonapi:"loser"`
+type Game struct {
+	gorm.Model
+	GameID      int64  `jsonapi:"primary,game_id"`
+	Board       int    `jsonapi:"attr,board"`
+	WhitePlayer Player `gorm:"foreignkey:PlayerID;association_foreignkey:Refer" jsonapi:"white_player"`
+	BlackPlayer Player `gorm:"foreignkey:PlayerID;association_foreignkey:Refer" jsonapi:"black_player"`
+	Moves       []Move `jsonapi:"moves"`
+	Winner      string `jsonapi:"winner"`
+	Loser       string `jsonapi:"loser"`
 }
 
 type Move struct {
-	ID     int64  `jsonapi:"id"`
-	GameID int64  `jsonapi:"game_id"`
+	gorm.Model
+	MoveID int64  `jsonapi:"primary,move_id"`
+	GameID int64  `gorm:"foreignkey:GameID;association_foreignkey:Refer" jsonapi:"game_id"`
 	X      string `jsonapi:"x"`
 	Y      string `jsonapi:"y"`
 }
 
 type Player struct {
-	ID       int64  `jsonapi:"id"`
+	gorm.Model
+	PlayerID int64  `jsonapi:"primary,player_id"`
 	Name     string `jsonapi:"name"`
 	Handicap string `jsonapi:"handicap"`
 	Rating   string `jsonapi:"rating"`
@@ -48,8 +45,8 @@ var err error
 func main() {
 	router := mux.NewRouter()
 
-	db, err = gorm.Open("mysql", "gotest:gotest@db/local_gotest?charset=utf8&parseTime=True&loc=Local")
-local_gotest
+	db, err = gorm.Open("mysql", "gotest:gotest@tcp(db:3306)/local_gotest?charset=utf8&parseTime=True&loc=Local")
+
 	if err != nil {
 		fmt.Printf("failed to connect database because %s", err)
 	}
@@ -57,19 +54,21 @@ local_gotest
 	defer db.Close()
 
 	db.AutoMigrate(&Player{})
+	db.AutoMigrate(&Game{})
+	db.AutoMigrate(&Move{})
 
 	router.HandleFunc("/players", IndexPlayers).Methods("GET")
 	router.HandleFunc("/players/{id}", ShowPlayer).Methods("GET")
 	router.HandleFunc("/players", CreatePlayer).Methods("POST")
 	router.HandleFunc("/players/{id}", DeletePlayer).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":80", router))
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 func IndexPlayers(w http.ResponseWriter, r *http.Request) {
-	var player []Player
-	db.Find(&player)
-	json.NewEncoder(w).Encode(&player)
+	var players []Player
+	db.Find(&players)
+	json.NewEncoder(w).Encode(&players)
 }
 
 func ShowPlayer(w http.ResponseWriter, r *http.Request) {

@@ -13,4 +13,10 @@ Docker-Compose
 
 ### Starting
 
-run command docker-compose up --build
+Right now the app starts before the db is healthy, I need to add a health check to the docker-compose. In the meantime do:
+
+docker-compose up -d db
+
+docker-compose logs -f db //checking for "server is ready for connections"
+
+docker-compose up app
