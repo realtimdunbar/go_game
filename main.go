@@ -48,8 +48,8 @@ var err error
 func main() {
 	router := mux.NewRouter()
 
-	db, err = gorm.Open("mysql", "gotest:gotest@db?charset=utf8&parseTime=True&loc=Local")
-
+	db, err = gorm.Open("mysql", "gotest:gotest@db/local_gotest?charset=utf8&parseTime=True&loc=Local")
+local_gotest
 	if err != nil {
 		fmt.Printf("failed to connect database because %s", err)
 	}
