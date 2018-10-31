@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jasonmccallister/go_game/models"
 	"github.com/jinzhu/gorm"
+	"github.com/realtimdunbar/go_game/models"
 )
 
 type server struct {
@@ -17,12 +17,13 @@ type server struct {
 // New will create a new server struct for the API configuration
 func New(dialect, conn string) (server, error) {
 	db, err := gorm.Open(dialect, conn)
-	if err != nil {
-		return s, err
-	}
 
 	s := server{
 		Router: mux.NewRouter(),
+	}
+
+	if err != nil {
+		return s, err
 	}
 
 	s.DB = db
@@ -66,4 +67,66 @@ func (s *server) DeletePlayer(w http.ResponseWriter, r *http.Request) {
 	var players []models.Player
 	s.DB.Find(&players)
 	json.NewEncoder(w).Encode(&players)
+}
+
+func (s *server) IndexGames(w http.ResponseWriter, r *http.Request) {
+	var games []models.Game
+	s.DB.Find(&games)
+	json.NewEncoder(w).Encode(&games)
+}
+
+func (s *server) ShowGame(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var game models.Game
+	s.DB.First(&game, params["id"])
+	json.NewEncoder(w).Encode(&game)
+}
+
+func (s *server) CreateGame(w http.ResponseWriter, r *http.Request) {
+	var game models.Game
+	json.NewDecoder(r.Body).Decode(&game)
+	s.DB.Create(&game)
+	json.NewEncoder(w).Encode(&game)
+}
+
+func (s *server) DeleteGame(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var game models.Game
+	s.DB.First(&game, params["id"])
+	s.DB.Delete(&game)
+
+	var games []models.Game
+	s.DB.Find(&games)
+	json.NewEncoder(w).Encode(&games)
+}
+
+func (s *server) IndexStones(w http.ResponseWriter, r *http.Request) {
+	var stones []models.Stone
+	s.DB.Find(&stones)
+	json.NewEncoder(w).Encode(&stones)
+}
+
+func (s *server) ShowStone(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var stone models.Stone
+	s.DB.First(&stone, params["id"])
+	json.NewEncoder(w).Encode(&stone)
+}
+
+func (s *server) CreateStone(w http.ResponseWriter, r *http.Request) {
+	var stone models.Stone
+	json.NewDecoder(r.Body).Decode(&stone)
+	s.DB.Create(&stone)
+	json.NewEncoder(w).Encode(&stone)
+}
+
+func (s *server) DeleteStone(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var stone models.Stone
+	s.DB.First(&stone, params["id"])
+	s.DB.Delete(&stone)
+
+	var stones []models.Stone
+	s.DB.Find(&stones)
+	json.NewEncoder(w).Encode(&stones)
 }

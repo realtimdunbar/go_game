@@ -9,14 +9,14 @@ type Game []struct {
 	BlackPlayer struct {
 		Player
 	} `jsonapi:"black_player"`
-	Moves []struct {
-		Move
-	} `jsonapi:"moves"`
+	Stones []struct {
+		Stone
+	} `jsonapi: Stones"`
 	Winner string `jsonapi:"winner"`
 	Loser  string `jsonapi:"loser"`
 }
 
-type Move struct {
+type Stone struct {
 	ID     int64  `jsonapi:"id"`
 	GameID int64  `jsonapi:"game_id"`
 	X      string `jsonapi:"x"`
