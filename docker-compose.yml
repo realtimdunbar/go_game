@@ -12,10 +12,10 @@ services:
   app:
     build: .
     volumes:
-      - .:/go/src/app`
+      - .:/go/src/app
     command: ["go", "run", "main.go"]
     ports:
-      - "80:8080"
+      - "8080:8080"
     depends_on:
       - db
     links:
