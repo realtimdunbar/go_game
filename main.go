@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	server, err := api.New("gotest:gotest@db/local_gotest?charset=utf8&parseTime=True&loc=Local")
+	server, err := api.New("mysql", "gotest:gotest@db/local_gotest?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		log.Fatal(err)
 	}

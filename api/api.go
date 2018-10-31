@@ -15,14 +15,14 @@ type server struct {
 }
 
 // New will create a new server struct for the API configuration
-func New(conn string) (server, error) {
-	s := server{
-		Router: mux.NewRouter(),
-	}
-	db, err := gorm.Open("mysql", conn)
-
+func New(dialect, conn string) (server, error) {
+	db, err := gorm.Open(dialect, conn)
 	if err != nil {
 		return s, err
+	}
+
+	s := server{
+		Router: mux.NewRouter(),
 	}
 
 	s.DB = db
