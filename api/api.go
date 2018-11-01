@@ -6,9 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+
 	// pulls in the dialect for GORM
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/realtimdunbar/go_game/models"
 )
 

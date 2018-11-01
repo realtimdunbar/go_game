@@ -9,7 +9,7 @@ import (
 
 func TestIndexPlayers(t *testing.T) {
 	// Arrange
-	s, err := api.New("sqlite", ":memory:")
+	s, err := api.New("sqlite3", ":memory:")
 	if err != nil {
 		t.Fatal(err)
 	}
