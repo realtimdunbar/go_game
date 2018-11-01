@@ -15,15 +15,15 @@ This is a Docker app all you need to do is install the prereqs below then start 
 
 Right now the app starts before the db is healthy, I need to add a health check to the docker-compose. In the meantime do:
 
-```
+```bash
 docker-compose up -d db
 ```
 
-```
+```bash
 // checking for "server is ready for connections"
 docker-compose logs -f db
 ```
 
-```
+```bash
 docker-compose up app
 ```
