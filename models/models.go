@@ -1,30 +1,32 @@
 package models
 
-type Game []struct {
-	ID          int64 `jsonapi:"primary,game_id"`
-	Board       int   `jsonapi:"attr,board"`
-	WhitePlayer struct {
-		Player
-	} `jsonapi:"white_player"`
-	BlackPlayer struct {
-		Player
-	} `jsonapi:"black_player"`
-	Stones []struct {
-		Stone
-	} `jsonapi: Stones"`
-	Winner string `jsonapi:"winner"`
-	Loser  string `jsonapi:"loser"`
+import (
+	"github.com/jinzhu/gorm"
+)
+
+type Game struct {
+	gorm.Model
+	Board       int     `jsonapi:"attr,board"`
+	WhitePlayer Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"white_player"`
+	BlackPlayer Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"black_player"`
+	Stones      []Stone `jsonapi: "stones"`
+	Winner      Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"winner"`
+	Loser       Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"loser"`
 }
 
 type Stone struct {
-	ID     int64  `jsonapi:"id"`
-	GameID int64  `jsonapi:"game_id"`
-	X      string `jsonapi:"x"`
-	Y      string `jsonapi:"y"`
+	gorm.Model
+	GameID        int64  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"game_id"`
+	X             string `jsonapi:"x"`
+	Y             string `jsonapi:"y"`
+	LibertyTop    *Stone `jsonapi:"liberty_top"`
+	LibertyBottom *Stone `jsonapi:"liberty_bottom"`
+	LibertyLeft   *Stone `jsonapi:"liberty_left"`
+	LibertyRight  *Stone `jsonapi:"liberty_right"`
 }
 
 type Player struct {
-	ID       int64  `jsonapi:"id"`
+	gorm.Model
 	Name     string `jsonapi:"name"`
 	Handicap string `jsonapi:"handicap"`
 	Rating   string `jsonapi:"rating"`

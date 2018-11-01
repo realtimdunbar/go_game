@@ -36,6 +36,14 @@ func (s *server) routes() {
 	s.Router.HandleFunc("/players/{id}", s.ShowPlayer).Methods("GET")
 	s.Router.HandleFunc("/players", s.CreatePlayer).Methods("POST")
 	s.Router.HandleFunc("/players/{id}", s.DeletePlayer).Methods("DELETE")
+	s.Router.HandleFunc("/games", s.IndexGames).Methods("GET")
+	s.Router.HandleFunc("/games/{id}", s.ShowGame).Methods("GET")
+	s.Router.HandleFunc("/games", s.CreateGame).Methods("POST")
+	s.Router.HandleFunc("/games/{id}", s.DeleteGame).Methods("DELETE")
+	s.Router.HandleFunc("/stones", s.IndexStones).Methods("GET")
+	s.Router.HandleFunc("/stones/{id}", s.ShowStone).Methods("GET")
+	s.Router.HandleFunc("/stones", s.CreateStone).Methods("POST")
+	s.Router.HandleFunc("/stones/{id}", s.DeleteStone).Methods("DELETE")
 }
 
 func (s *server) IndexPlayers(w http.ResponseWriter, r *http.Request) {
