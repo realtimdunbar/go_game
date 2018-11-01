@@ -9,7 +9,7 @@ type Game struct {
 	Board       int     `jsonapi:"attr,board"`
 	WhitePlayer Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"white_player"`
 	BlackPlayer Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"black_player"`
-	Stones      []Stone `jsonapi: "stones"`
+	Stones      []Stone `jsonapi:"stones"`
 	Winner      Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"winner"`
 	Loser       Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" jsonapi:"loser"`
 }
