@@ -1,28 +1,40 @@
 package api_test
 
 import (
+	"log"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/realtimdunbar/go_game/api"
 )
 
-func TestIndexPlayers(t *testing.T) {
-	// Arrange
+func mockAPI() api.Server {
 	s, err := api.New("sqlite3", ":memory:")
 	if err != nil {
-		t.Fatal(err)
+		log.Fatal(err)
 	}
 	s.Routes()
+
+	return s
+}
+
+func TestIndexPlayers(t *testing.T) {
+	// Arrange
+	s := mockAPI()
 
 	// Act
 	req, err := http.NewRequest(http.MethodGet, "/players", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(s.IndexPlayers)
+	handler.ServeHTTP(rr, req)
 
 	// Assert
-	if req.Response.StatusCode != http.StatusOK {
-		t.Errorf("Expected 200, got %v instead", req.Response.StatusCode)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
 	}
 }
