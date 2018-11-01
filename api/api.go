@@ -29,6 +29,13 @@ func New(dialect, conn string) (Server, error) {
 	return Server{Router: mux.NewRouter(), DB: db}, nil
 }
 
+// MigrateDB lets the application know if it should migrate to database
+func (s *Server) MigrateDB(b *bool) {
+	if *b {
+		s.DB.AutoMigrate(&models.Player{})
+	}
+}
+
 func (s *Server) Routes() {
 	s.Router.HandleFunc("/players", s.IndexPlayers).Methods("GET")
 	s.Router.HandleFunc("/players/{id}", s.ShowPlayer).Methods("GET")
@@ -39,6 +46,9 @@ func (s *Server) Routes() {
 func (s *Server) IndexPlayers(w http.ResponseWriter, r *http.Request) {
 	var player []models.Player
 	s.DB.Find(&player)
+
+	w.WriteHeader(http.StatusOK)
+
 	json.NewEncoder(w).Encode(&player)
 }
 

@@ -16,7 +16,7 @@ func TestIndexPlayers(t *testing.T) {
 	s.Routes()
 
 	// Act
-	req, err := http.NewRequest(http.MethodGet, "players", nil)
+	req, err := http.NewRequest(http.MethodGet, "/players", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
