@@ -18,8 +18,9 @@ func main() {
 	flag.BoolVar(flagMigrate, "migrate", true, "if the application should run database migrations")
 	flag.Parse()
 
-	server, err := api.New("mysql", "gotest:gotest@db/local_gotest?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
+	server, err := api.New("mysql", "gotest:gotest@tcp(db:3306)/local_gotest?charset=utf8&parseTime=True&loc=Local")
+
+  if err != nil {
 		log.Fatal(err)
 	}
 	defer server.DB.Close()
