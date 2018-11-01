@@ -6,6 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	// pulls in the dialect for GORM
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/realtimdunbar/go_game/models"
 )
 
@@ -25,7 +28,7 @@ func New(dialect, conn string) (Server, error) {
 	return Server{Router: mux.NewRouter(), DB: db}, nil
 }
 
-func (s *Server) routes() {
+func (s *Server) Routes() {
 	s.Router.HandleFunc("/players", s.IndexPlayers).Methods("GET")
 	s.Router.HandleFunc("/players/{id}", s.ShowPlayer).Methods("GET")
 	s.Router.HandleFunc("/players", s.CreatePlayer).Methods("POST")

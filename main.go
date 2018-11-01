@@ -6,8 +6,6 @@ import (
 
 	"github.com/realtimdunbar/go_game/api"
 	"github.com/realtimdunbar/go_game/models"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {
