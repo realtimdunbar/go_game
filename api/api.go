@@ -30,10 +30,10 @@ func New(dialect, conn string) (Server, error) {
 }
 
 // MigrateDB lets the application know if it should migrate to database
-func (s *Server) MigrateDB(b *bool) {
-	if *b {
-		s.DB.AutoMigrate(&models.Player{})
-	}
+func (s *Server) MigrateDB() {
+	s.DB.AutoMigrate(&models.Player{})
+	s.DB.AutoMigrate(&models.Game{})
+	s.DB.AutoMigrate(&models.Stone{})
 }
 
 func (s *Server) Routes() {

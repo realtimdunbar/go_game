@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/realtimdunbar/go_game/api"
 )
 
@@ -20,12 +21,13 @@ func main() {
 
 	server, err := api.New("mysql", "gotest:gotest@tcp(db:3306)/local_gotest?charset=utf8&parseTime=True&loc=Local")
 
-  if err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 	defer server.DB.Close()
+	if flagMigrate {
+		api.MigrateDB()
+	}
 
-	server.MigrateDB(flagMigrate)
-
-	log.Fatal(http.ListenAndServe(":"+*flagPort, server.Router))
+	log.Fatal(http.ListenAndServe(":8080", server.Router))
 }

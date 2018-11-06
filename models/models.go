@@ -6,7 +6,7 @@ import (
 
 type Game struct {
 	gorm.Model
-	Board       int     `json:"attr,board"`
+	BoardSize   int     `json:"attr,board_size"`
 	WhitePlayer Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" json:"white_player"`
 	BlackPlayer Player  `gorm:"foreignkey:ID;association_foreignkey:Refer" json:"black_player"`
 	Stones      []Stone `json:"stones"`
